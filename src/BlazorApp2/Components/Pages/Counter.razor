@@ -8,7 +8,13 @@
 
 <p role="status">Current count: @currentCount</p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+<button class="btn btn-primary" @onclick="IncrementCountAsync">Click me</button>
+<div class="mt-3" >
+    <input @oninput="OnInput">
+    <p>@text</p>
+</div>
+<MyButton OnClick="IncrementCount" class="btn btn-success" >MyButton27</MyButton>
 <ul>
     @for(var i =0; i<@currentCount; i++)
     {
@@ -16,7 +22,22 @@
     }
 </ul>
 <p> InitialCount:@InitialCount </p>
+<div style="background-color: lightblue;" @onmouseover="MouseOver" @onmouseout="MouseOut" >@divText</div>
+<div id="divBinding1" class="mt-3" >
+    @* <input value="@textBinding1" @onchange="OnChangeBinding1" > *@
+    <input @bind="@textBinding1" @bind:event="oninput" @bind:after="Search" > 
+    <button  @onclick="OnClickBinding1" >Clear</button>
+    <p>@textBinding1</p>
+    <p>@searchResult</p>
+</div>
+
 @code {
+    string text = "";
+    string textBinding1 = "";
+
+    string searchResult = "";
+    string divText = "Mouse out";
+
     private int currentCount = 0;
 
     protected override void OnInitialized()
@@ -31,5 +52,30 @@
     private void IncrementCount()
     {
         currentCount++;
+    }
+
+    async Task IncrementCountAsync()
+    {
+        await Task.Delay(1000);
+        currentCount++;
+    }
+
+    private void OnInput(ChangeEventArgs args) => text = (string)args.Value!;
+    private void MouseOver(MouseEventArgs args) => divText = "Mouse over";
+    private void MouseOut(MouseEventArgs args) => divText = "Mouse out";
+    @*     private void OnChangeBinding1(ChangeEventArgs args)
+    {
+        textBinding1 = (string) args.Value!;
+    } *@
+    private void OnClickBinding1(MouseEventArgs args)
+    {
+        textBinding1 = string.Empty;
+    }
+    async Task Search()
+    {
+
+        searchResult = "searching..";
+        await Task.Delay(2000);
+        searchResult = $"Found {Random.Shared.Next()} results!";
     }
 }

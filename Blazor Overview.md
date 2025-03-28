@@ -14,7 +14,6 @@ Razor is combination of HTML and C# directives like @page, @code etc
 [Parameter]
 public int IncrementAmount { get; set; } = 1;
 ````
-
 ## Component calling with parameter
 ````cs
 <Counter IncrementAmount="10" ></Counter>
